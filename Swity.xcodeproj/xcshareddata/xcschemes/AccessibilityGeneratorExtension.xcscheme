@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4A8C7EE62693808F005011C5"
-               BuildableName = "AccessibilityGeneratorExtension.appex"
+               BuildableName = "SwityExtension.appex"
                BlueprintName = "SwityExtension"
                ReferencedContainer = "container:Swity.xcodeproj">
             </BuildableReference>
@@ -30,7 +30,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4A8C7ECF2693806C005011C5"
-               BuildableName = "AccessibilityGenerator.app"
+               BuildableName = "Swity.app"
                BlueprintName = "Swity"
                ReferencedContainer = "container:Swity.xcodeproj">
             </BuildableReference>
@@ -67,7 +67,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4A8C7ECF2693806C005011C5"
-            BuildableName = "AccessibilityGenerator.app"
+            BuildableName = "Swity.app"
             BlueprintName = "Swity"
             ReferencedContainer = "container:Swity.xcodeproj">
          </BuildableReference>
@@ -86,7 +86,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4A8C7ECF2693806C005011C5"
-            BuildableName = "AccessibilityGenerator.app"
+            BuildableName = "Swity.app"
             BlueprintName = "Swity"
             ReferencedContainer = "container:Swity.xcodeproj">
          </BuildableReference>
