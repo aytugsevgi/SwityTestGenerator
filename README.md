@@ -1,5 +1,7 @@
 # Swift Accessibility Identifiers Generator Xcode Source Editor Extension
 
+** readme will update. added mock generator for new unit test structure.
+
 An Xcode extension to generate accessibility identifiers automatically.
 
 ![demo](https://user-images.githubusercontent.com/33103753/124762566-b3f25600-df3b-11eb-9cc3-eb77dddc64a3.gif)
