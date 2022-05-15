@@ -26,7 +26,7 @@
 		4A8C7EEA2693808F005011C5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A8C7EE92693808F005011C5 /* Cocoa.framework */; };
 		4A8C7EEF2693808F005011C5 /* SourceEditorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8C7EEE2693808F005011C5 /* SourceEditorExtension.swift */; };
 		4A8C7EF12693808F005011C5 /* SourceEditorCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8C7EF02693808F005011C5 /* SourceEditorCommand.swift */; };
-		4A8C7EF62693808F005011C5 /* AccessibilityGeneratorExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4A8C7EE72693808F005011C5 /* AccessibilityGeneratorExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4A8C7EF62693808F005011C5 /* SwityExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4A8C7EE72693808F005011C5 /* SwityExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4A8C7EFB269383B4005011C5 /* XcodeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A8C7EEB2693808F005011C5 /* XcodeKit.framework */; };
 		4A8C7EFC269383B4005011C5 /* XcodeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A8C7EEB2693808F005011C5 /* XcodeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4AC7555526F3A6D600A1EA79 /* AccessibilityGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC7555426F3A6D600A1EA79 /* AccessibilityGenerator.swift */; };
@@ -58,7 +58,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				4A8C7EF62693808F005011C5 /* AccessibilityGeneratorExtension.appex in Embed App Extensions */,
+				4A8C7EF62693808F005011C5 /* SwityExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -83,14 +83,14 @@
 		4A6382EB271B3A300044DA79 /* StorePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePresenter.swift; sourceTree = "<group>"; };
 		4A6382EF271B3A9B0044DA79 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		4A7B9A0A2742352B00B27E83 /* MockAccessibilityGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAccessibilityGenerator.swift; sourceTree = "<group>"; };
-		4A8C7ED02693806C005011C5 /* AccessibilityGenerator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AccessibilityGenerator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A8C7ED02693806C005011C5 /* Swity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A8C7ED32693806C005011C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4A8C7ED52693806C005011C5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4A8C7ED72693806D005011C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4A8C7EDA2693806D005011C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4A8C7EDC2693806D005011C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4A8C7EDD2693806D005011C5 /* AccessibilityGenerator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AccessibilityGenerator.entitlements; sourceTree = "<group>"; };
-		4A8C7EE72693808F005011C5 /* AccessibilityGeneratorExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AccessibilityGeneratorExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A8C7EE72693808F005011C5 /* SwityExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SwityExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A8C7EE92693808F005011C5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4A8C7EEB2693808F005011C5 /* XcodeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XcodeKit.framework; path = Library/Frameworks/XcodeKit.framework; sourceTree = DEVELOPER_DIR; };
 		4A8C7EEE2693808F005011C5 /* SourceEditorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceEditorExtension.swift; sourceTree = "<group>"; };
@@ -154,8 +154,8 @@
 		4A8C7ED12693806C005011C5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4A8C7ED02693806C005011C5 /* AccessibilityGenerator.app */,
-				4A8C7EE72693808F005011C5 /* AccessibilityGeneratorExtension.appex */,
+				4A8C7ED02693806C005011C5 /* Swity.app */,
+				4A8C7EE72693808F005011C5 /* SwityExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -222,9 +222,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4A8C7ECF2693806C005011C5 /* AccessibilityGenerator */ = {
+		4A8C7ECF2693806C005011C5 /* Swity */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4A8C7EE02693806D005011C5 /* Build configuration list for PBXNativeTarget "AccessibilityGenerator" */;
+			buildConfigurationList = 4A8C7EE02693806D005011C5 /* Build configuration list for PBXNativeTarget "Swity" */;
 			buildPhases = (
 				4A8C7ECC2693806C005011C5 /* Sources */,
 				4A8C7ECD2693806C005011C5 /* Frameworks */,
@@ -236,14 +236,14 @@
 			dependencies = (
 				4A8C7EF52693808F005011C5 /* PBXTargetDependency */,
 			);
-			name = AccessibilityGenerator;
+			name = Swity;
 			productName = AccessibilityGenerator;
-			productReference = 4A8C7ED02693806C005011C5 /* AccessibilityGenerator.app */;
+			productReference = 4A8C7ED02693806C005011C5 /* Swity.app */;
 			productType = "com.apple.product-type.application";
 		};
-		4A8C7EE62693808F005011C5 /* AccessibilityGeneratorExtension */ = {
+		4A8C7EE62693808F005011C5 /* SwityExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4A8C7EF72693808F005011C5 /* Build configuration list for PBXNativeTarget "AccessibilityGeneratorExtension" */;
+			buildConfigurationList = 4A8C7EF72693808F005011C5 /* Build configuration list for PBXNativeTarget "SwityExtension" */;
 			buildPhases = (
 				4A8C7EE32693808F005011C5 /* Sources */,
 				4A8C7EE42693808F005011C5 /* Frameworks */,
@@ -254,9 +254,9 @@
 			);
 			dependencies = (
 			);
-			name = AccessibilityGeneratorExtension;
+			name = SwityExtension;
 			productName = AccessibilityGeneratorExtension;
-			productReference = 4A8C7EE72693808F005011C5 /* AccessibilityGeneratorExtension.appex */;
+			productReference = 4A8C7EE72693808F005011C5 /* SwityExtension.appex */;
 			productType = "com.apple.product-type.xcode-extension";
 		};
 /* End PBXNativeTarget section */
@@ -276,7 +276,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4A8C7ECB2693806C005011C5 /* Build configuration list for PBXProject "AccessibilityGenerator" */;
+			buildConfigurationList = 4A8C7ECB2693806C005011C5 /* Build configuration list for PBXProject "Swity" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -289,8 +289,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4A8C7ECF2693806C005011C5 /* AccessibilityGenerator */,
-				4A8C7EE62693808F005011C5 /* AccessibilityGeneratorExtension */,
+				4A8C7ECF2693806C005011C5 /* Swity */,
+				4A8C7EE62693808F005011C5 /* SwityExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -360,7 +360,7 @@
 /* Begin PBXTargetDependency section */
 		4A8C7EF52693808F005011C5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4A8C7EE62693808F005011C5 /* AccessibilityGeneratorExtension */;
+			target = 4A8C7EE62693808F005011C5 /* SwityExtension */;
 			targetProxy = 4A8C7EF42693808F005011C5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -591,7 +591,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4A8C7ECB2693806C005011C5 /* Build configuration list for PBXProject "AccessibilityGenerator" */ = {
+		4A8C7ECB2693806C005011C5 /* Build configuration list for PBXProject "Swity" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4A8C7EDE2693806D005011C5 /* Debug */,
@@ -600,7 +600,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4A8C7EE02693806D005011C5 /* Build configuration list for PBXNativeTarget "AccessibilityGenerator" */ = {
+		4A8C7EE02693806D005011C5 /* Build configuration list for PBXNativeTarget "Swity" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4A8C7EE12693806D005011C5 /* Debug */,
@@ -609,7 +609,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4A8C7EF72693808F005011C5 /* Build configuration list for PBXNativeTarget "AccessibilityGeneratorExtension" */ = {
+		4A8C7EF72693808F005011C5 /* Build configuration list for PBXNativeTarget "SwityExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4A8C7EF82693808F005011C5 /* Debug */,

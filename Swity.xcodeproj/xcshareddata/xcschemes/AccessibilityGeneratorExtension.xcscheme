@@ -17,8 +17,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4A8C7EE62693808F005011C5"
                BuildableName = "AccessibilityGeneratorExtension.appex"
-               BlueprintName = "AccessibilityGeneratorExtension"
-               ReferencedContainer = "container:AccessibilityGenerator.xcodeproj">
+               BlueprintName = "SwityExtension"
+               ReferencedContainer = "container:Swity.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -31,8 +31,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4A8C7ECF2693806C005011C5"
                BuildableName = "AccessibilityGenerator.app"
-               BlueprintName = "AccessibilityGenerator"
-               ReferencedContainer = "container:AccessibilityGenerator.xcodeproj">
+               BlueprintName = "Swity"
+               ReferencedContainer = "container:Swity.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -68,8 +68,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4A8C7ECF2693806C005011C5"
             BuildableName = "AccessibilityGenerator.app"
-            BlueprintName = "AccessibilityGenerator"
-            ReferencedContainer = "container:AccessibilityGenerator.xcodeproj">
+            BlueprintName = "Swity"
+            ReferencedContainer = "container:Swity.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </LaunchAction>
@@ -87,8 +87,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4A8C7ECF2693806C005011C5"
             BuildableName = "AccessibilityGenerator.app"
-            BlueprintName = "AccessibilityGenerator"
-            ReferencedContainer = "container:AccessibilityGenerator.xcodeproj">
+            BlueprintName = "Swity"
+            ReferencedContainer = "container:Swity.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
