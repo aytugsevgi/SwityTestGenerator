@@ -7,7 +7,7 @@ An Xcode extension to generate accessibility identifiers automatically.
 ## Installation
 
 - Close Xcode if it is open
-- Download the latest release [here](https://github.com/aniltaskiran/LazyXcode/raw/master/AccessibilityGenerator/DmgFile/AccessibilityGenerator.dmg)
+- Download the latest release [here](https://github.com/aytugsevgi/SwityTestGenerator/raw/master/DmgFile/Swity.dmg)
 - Copy the app to the `Applications` folder.
 - Open the app from the applications.
 - Tap the `Open Extensions` button. Then go to `Xcode Source Editor` tab and make sure `Accessibility Generator` is enabled.
