@@ -133,13 +133,18 @@ public final class MockAccessibilityGenerator: Runnable {
                 }
                 variable = funcNameWithoutParameters + "(" + parameterNames.joined(separator: ", ") + ")"
             }
+            if let _ = arrayLines.firstIndex(where: { $0.contains("invokedList.append(.\(variable))")}) {
+                return
+            }
             var newLine = line
             newLine.removeLast(2)
             newLine += "\n\t\tinvokedList.append(.\(variable))\n\t}"
             arrayLines.remove(at: abs(index.distance(to: 0)))
             arrayLines.insert(newLine, at: abs(index.distance(to: 0)))
         }
-        
+        if let index = arrayLines.firstIndex(where: { $0.contains("enum \(className)Elements: MockEquatable")}) {
+            arrayLines = Array(arrayLines[0..<abs(index.distance(to: 0))])
+        }
         arrayLines.append(createUIElements(outletNames: variables, elementsName: "\(className)Elements"))
         updateLines(from: arrayLines)
     }
