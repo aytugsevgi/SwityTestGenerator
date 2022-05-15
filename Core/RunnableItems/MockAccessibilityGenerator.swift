@@ -23,9 +23,20 @@ public final class MockAccessibilityGenerator: Runnable {
     private lazy var variables: [String] = {
         guard let lines = lines,
               var arrayLines = Array(lines) as? Array<String> else { return .init() }
-        let outlets = arrayLines.filter { $0.contains(" = false") && $0.contains("var invoked") }.compactMap { line -> (String)? in
-            guard line.components(separatedBy: " ").count > 3,
-                  let variable = line.components(separatedBy: " ").suffix(3).first else { return nil }
+        let outlets = arrayLines.filter { $0.contains("func ")}.compactMap { line -> (String)? in
+            guard line.components(separatedBy: " ").count > 2 else { return nil }
+            var separatedWords = line.components(separatedBy: " ").filter({ !$0.isEmpty })
+            separatedWords.removeLast()
+            separatedWords.removeFirst()
+            var variable = separatedWords.joined(separator: " ")
+            let firstChar = variable.removeFirst().uppercased()
+            variable = "invoked\(firstChar)\(variable)"
+            if variable.hasSuffix("()") {
+                variable.removeLast(2)
+            } else {
+                variable.removeLast()
+                variable.append(")")
+            }
             return variable
         }
         return outlets
@@ -53,7 +64,7 @@ public final class MockAccessibilityGenerator: Runnable {
     }
 
     private func createUIElements(outletNames: [String], elementsName: String) -> String {
-        var elementExtension = "\nenum \(elementsName): String, AccessibilityMockIdentifiable {\n"
+        var elementExtension = "\nenum \(elementsName): MockEquatable {\n"
         for name in variables {
             elementExtension.append("\tcase \(name)\n")
         }
@@ -74,12 +85,61 @@ public final class MockAccessibilityGenerator: Runnable {
         guard let classIndex = classLineWords.firstIndex(of: "class") else { return }
         className = String(classLineWords[classIndex + 1])
         className.removeAll { $0 == ":"}
+        guard let interfaceIndex = arrayLines.firstIndex(of: classLine) else { return }
+        
+        // conform MockAssertable if not exist
         if !classLine.contains("MockAssertable") {
             let conformedLine = addAccessibilityIdetifiable(to: classLine)
-            guard let interfaceIndex = arrayLines.firstIndex(of: classLine) else { return }
             arrayLines.remove(at: abs(interfaceIndex.distance(to: 0)))
             arrayLines.insert(conformedLine, at: abs(interfaceIndex.distance(to: 0)))
         }
+        
+        if arrayLines.first(where: { $0.contains("typealias MockIdentifier =") }) == nil {
+            arrayLines.insert("\ttypealias MockIdentifier = \(className)Elements", at: interfaceIndex + 1)
+        }
+        if arrayLines.first(where: { $0.contains("var invokedList:") }) == nil {
+            arrayLines.insert("\tvar invokedList: \(className)Elements = []", at: interfaceIndex + 2)
+        }
+        
+        // add cases to array for each stub
+        arrayLines.filter { $0.contains("func ")}.forEach { line in
+            guard line.components(separatedBy: " ").count > 2,
+                  let index = arrayLines.firstIndex(of: line) else { return }
+            var separatedWords = line.components(separatedBy: " ").filter({ !$0.isEmpty })
+            separatedWords.removeLast()
+            separatedWords.removeFirst()
+            var variable = separatedWords.joined(separator: " ")
+            let firstChar = variable.removeFirst().uppercased()
+            variable = "invoked\(firstChar)\(variable)"
+            if variable.hasSuffix("()") {
+                variable.removeLast(2)
+            } else {
+                variable.removeLast()
+                variable.append(")")
+                var insideOfBrackets = variable.components(separatedBy: "(").last ?? ""
+                insideOfBrackets.removeLast()
+                let parameters = insideOfBrackets.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespaces)}
+                var parameterNames = parameters.map { $0.components(separatedBy: ":").first ?? "" }
+                parameterNames.removeAll { $0.isEmpty }
+                var funcNameWithoutParameters = line.components(separatedBy: " ").filter({ !$0.isEmpty }).prefix(2).last ?? ""
+                funcNameWithoutParameters = funcNameWithoutParameters.components(separatedBy: "(").first ?? ""
+                parameterNames = parameterNames.map { name in
+                    if name.hasPrefix("_ ") {
+                        var actualName = name
+                        actualName.removeFirst(2)
+                        return actualName
+                    }
+                    return name + ": " + name
+                }
+                variable = funcNameWithoutParameters + "(" + parameterNames.joined(separator: ", ") + ")"
+            }
+            var newLine = line
+            newLine.removeLast(2)
+            newLine += "\n\t\tinvokedList.append(.\(variable))\n\t}"
+            arrayLines.remove(at: abs(index.distance(to: 0)))
+            arrayLines.insert(newLine, at: abs(index.distance(to: 0)))
+        }
+        
         arrayLines.append(createUIElements(outletNames: variables, elementsName: "\(className)Elements"))
         updateLines(from: arrayLines)
     }

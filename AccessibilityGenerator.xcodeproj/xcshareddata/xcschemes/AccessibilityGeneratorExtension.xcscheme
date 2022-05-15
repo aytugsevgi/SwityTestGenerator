@@ -46,9 +46,10 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = ""
       selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
+      debugAsWhichUser = "root"
       launchStyle = "0"
       askForAppToLaunch = "Yes"
       useCustomWorkingDirectory = "NO"
@@ -60,7 +61,7 @@
       <RemoteRunnable
          runnableDebuggingMode = "0"
          BundleIdentifier = "com.apple.dt.Xcode"
-         RemotePath = "/Applications/Xcode.app">
+         RemotePath = "/Applications/Xcode-13.2.1.app">
       </RemoteRunnable>
       <MacroExpansion>
          <BuildableReference
@@ -78,6 +79,7 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES"
+      askForAppToLaunch = "Yes"
       launchAutomaticallySubstyle = "2">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
