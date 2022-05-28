@@ -34,7 +34,7 @@
 					<key>XCSourceEditorCommandIdentifier</key>
 					<string>mockAccessibility</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>Generate Unit Test Mock(Beta)</string>
+					<string>Generate Mock (Unit Test)</string>
 				</dict>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
