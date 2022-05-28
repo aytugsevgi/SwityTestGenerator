@@ -1,4 +1,4 @@
-# Swift Accessibility Identifiers Generator Xcode Source Editor Extension
+# Swift UI/Unit Test Generator Xcode Source Editor Extension
 
 ** readme will update. added mock generator for new unit test structure.
 
