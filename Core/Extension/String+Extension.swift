@@ -40,6 +40,12 @@ extension String {
         let beginChar = self.removeFirst()
         self = "\(beginChar.uppercased())\(self)"
     }
+    
+    var uppercasedFirst: String {
+        var temp = self
+        let beginChar = temp.removeFirst()
+        return "\(beginChar.uppercased())\(temp)"
+    }
 }
 
 
