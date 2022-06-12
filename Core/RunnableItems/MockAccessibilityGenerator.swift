@@ -169,11 +169,47 @@ public final class MockAccessibilityGenerator: Runnable {
             } else {
                 appendableCase.removeLast()
             }
+            let stubbedParam = function.signature.input.first(where: { input in
+                input.type?.contains("->") ?? false
+            })
+            var stubbedType = stubbedParam?.type?.trimmingCharacters(in: .whitespaces) ?? "unknown"
+            if stubbedType.hasPrefix("@escaping") {
+                stubbedType.removeFirst(10)
+            }
+            
+            let stubbedTupleItems = stubbedType.components(separatedBy: "->")
+            var lastItem = stubbedTupleItems.last?.trimmingCharacters(in: .whitespaces) ?? "(unknown)"
+            var firstItem = stubbedTupleItems.first?.trimmingCharacters(in: .whitespaces) ?? "Void"
+            if firstItem.hasPrefix("(") {
+                firstItem.removeFirst()
+            }
+            
+            if lastItem.hasSuffix(")") {
+                lastItem.removeLast()
+            }
+            var tempFirstItem = firstItem
+            tempFirstItem.removeAll(where: { $0 == "(" || $0 == ")" })
+            
+            // if is not a tuple
+            if !tempFirstItem.contains(",") {
+                firstItem = tempFirstItem
+            }
+            
+            let stubbedParamName = ((stubbedParam?.secondName ?? stubbedParam?.firstName) ?? "completion")
+            let stubbedName = firstItem.isEmpty ? "shouldInvoke\(function.identifier.uppercasedFirst)\(stubbedParamName.uppercasedFirst)" : "stubbed\(function.identifier.uppercasedFirst)\(stubbedParamName.uppercasedFirst)Result"
+            let optionalIfNeeded = stubbedType.last == "?" ? "?" : ""
+            let stubbedIfCodes = firstItem.isEmpty
+            ? "\tif \(stubbedName) {\n\t\t\t\(stubbedParamName)\(optionalIfNeeded)()\n\t\t}\n\t}"
+            : "\tif let result = \(stubbedName) {\n\t\t\t\(stubbedParamName)\(optionalIfNeeded)(result.0)\n\t\t}\n\t}"
             arrayLines.insert(
                             """
-                                \(function.description) {
+                                \(stubbedParam != nil ? "var \(stubbedName)\(firstItem.isEmpty ? " = false\n\n\t" : ": (\(firstItem),\(lastItem))?\n\n\t")" : "")\(function.description) {
                                     invokedList.append(.\(appendableCase))
-                                \(function.signature.output != nil ? "\treturn stubbed\(function.identifier.uppercasedFirst)Result\n\t}" : "}")
+                                \(function.signature.output != nil
+                            ? "\treturn stubbed\(function.identifier.uppercasedFirst)Result\n\t}"
+                            : stubbedParam != nil
+                            ? stubbedIfCodes
+                            : "}")
                             """,
                             at: index)
         }
