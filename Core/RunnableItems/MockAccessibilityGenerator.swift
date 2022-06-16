@@ -80,13 +80,13 @@ public final class MockAccessibilityGenerator: Runnable {
             
             if !variable.name.hasPrefix("stubbed") {
                 print(variable.name)
-                let invokedGetter = "invoked" + variable.name.uppercasedFirst + "Getter"
+                let invokedGetter = variable.name + "Getter"
                 enumCases.append(invokedGetter)
                 guard let index = arrayLines.firstIndex(where: { $0.contains(variable.description) }) else { return }
                 
                 let overrideIfNeeded = variable.modifiers.contains(where: { $0.name == "override" }) ? "override " : ""
                 if variable.accessors.contains(where: { $0.kind == .set }) {
-                    let invokedSetter = "invoked" + variable.name.uppercasedFirst + "Setter(value: \(variable.typeAnnotation ?? ""))"
+                    let invokedSetter = variable.name + "Setter(value: \(variable.typeAnnotation ?? ""))"
                     enumCases.append(invokedSetter)
                     guard let index = arrayLines.firstIndex(where: { $0.contains(variable.description) }) else { return }
                     (1...6).forEach{ _ in arrayLines.remove(at: index) }
@@ -95,7 +95,7 @@ public final class MockAccessibilityGenerator: Runnable {
                                         \(overrideIfNeeded)\(variable.description) {
                                             set {
                                                 stubbed\(variable.name.uppercasedFirst) = newValue
-                                                invokedList.append(.invoked\(variable.name.uppercasedFirst)Setter(value: newValue))
+                                                invokedList.append(.\(variable.name)Setter(value: newValue))
                                             }
                                             get {
                                                 invokedList.append(.\(invokedGetter))
@@ -119,14 +119,14 @@ public final class MockAccessibilityGenerator: Runnable {
         }
         
         collector.functions.forEach { function in
-            var enumCase = "invoked" + function.identifier.uppercasedFirst
+            var enumCase = function.identifier
             var index = 0
             while enumCases.contains(where: { $0.contains(enumCase + "(") ||  $0 == enumCase }) {
                 guard index < function.signature.input.count else { break }
                 enumCase += (function.signature.input[index].secondName ?? function.signature.input[index].firstName ?? "nonParam").uppercasedFirst
                 index += 1
             }
-            var nameWithoutParameters = enumCase
+            let nameWithoutParameters = enumCase
             enumCase += "("
             function.signature.input.forEach { input in
                 var inputType = input.type ?? "unknown"
@@ -194,9 +194,8 @@ public final class MockAccessibilityGenerator: Runnable {
             if !tempFirstItem.contains(",") {
                 firstItem = tempFirstItem
             }
-            
-            let stubbedParamName = ((stubbedParam?.secondName ?? stubbedParam?.firstName) ?? "completion")
-            let stubbedName = firstItem.isEmpty ? "shouldInvoke\(function.identifier.uppercasedFirst)\(stubbedParamName.uppercasedFirst)" : "stubbed\(function.identifier.uppercasedFirst)\(stubbedParamName.uppercasedFirst)Result"
+            let stubbedParamName = ((stubbedParam?.secondName ?? stubbedParam?.firstName) ?? "")
+            let stubbedName = firstItem.isEmpty ? "shouldInvoke\(nameWithoutParameters.uppercasedFirst)\(stubbedParamName.uppercasedFirst)" : "stubbed\(nameWithoutParameters.uppercasedFirst)\(stubbedParamName.uppercasedFirst)Result"
             let optionalIfNeeded = stubbedType.last == "?" ? "?" : ""
             let stubbedIfCodes = firstItem.isEmpty
             ? "\tif \(stubbedName) {\n\t\t\t\(stubbedParamName)\(optionalIfNeeded)()\n\t\t}\n\t}"
@@ -206,7 +205,7 @@ public final class MockAccessibilityGenerator: Runnable {
                                 \(stubbedParam != nil ? "var \(stubbedName)\(firstItem.isEmpty ? " = false\n\n\t" : ": (\(firstItem),\(lastItem))?\n\n\t")" : "")\(function.description) {
                                     invokedList.append(.\(appendableCase))
                                 \(function.signature.output != nil
-                            ? "\treturn stubbed\(function.identifier.uppercasedFirst)Result\n\t}"
+                            ? "\treturn \(stubbedName)\n\t}"
                             : stubbedParam != nil
                             ? stubbedIfCodes
                             : "}")

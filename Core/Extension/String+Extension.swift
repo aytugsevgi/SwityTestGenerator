@@ -42,10 +42,9 @@ extension String {
     }
     
     var uppercasedFirst: String {
+        guard !self.isEmpty else { return self }
         var temp = self
         let beginChar = temp.removeFirst()
         return "\(beginChar.uppercased())\(temp)"
     }
 }
-
-
