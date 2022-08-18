@@ -98,21 +98,22 @@ public final class UITestablePageGenerator: Runnable {
               var arrayLines = Array(lines) as? Array<String>,
               !outlets.isEmpty else { return nil }
         arrayLines.append("\nimport XCTest\n")
-        arrayLines.append("import AccessibilityKit\n\n")
+        arrayLines.append("import AccessibilityKit\n")
+        arrayLines.append("import UITestBaseKit\n\n")
         let classWithoutSuffix = className.replacingOccurrences(of: "ViewController", with: "")
-        arrayLines.append("final class \(classWithoutSuffix)Page: UIElementPage<UIElements.\(className)Elements> {\n")
+        arrayLines.append("public final class \(classWithoutSuffix)Page: UIElementPage<UIElements.\(className)Elements> {\n")
         arrayLines.append("\t// MARK: - \(className)")
         outlets.forEach { (name, type) in
             let elementType = UIElementType.init(rawValue: String(type)) ?? .otherElement
             arrayLines.append("\tlazy var \(name) = \(elementType)(.\(name))\n")
         }
-        arrayLines.append("\n\trequired init() {\n")
+        arrayLines.append("\n\tpublic required init() {\n")
         arrayLines.append("\t\tsuper.init()\n")
         arrayLines.append("\t\tcheck()\n")
         arrayLines.append("\t}\n\n")
 
         arrayLines.append("\t@discardableResult\n")
-        arrayLines.append("\tfunc check() -> Self {\n")
+        arrayLines.append("\tpublic func check() -> Self {\n")
         for (index, name) in outletNames.enumerated() {
             if index == .zero {
                 arrayLines.append("\t\twaitForElements(elements: [\(name): .exist\(outletNames.count == 1 ? "])\n" : ", ")")
@@ -133,7 +134,8 @@ public final class UITestablePageGenerator: Runnable {
               var arrayLines = Array(lines) as? Array<String>,
               !outlets.isEmpty else { return nil }
         arrayLines.append("\nimport XCTest\n")
-        arrayLines.append("import AccessibilityKit\n\n")
+        arrayLines.append("import AccessibilityKit\n")
+        arrayLines.append("import UITestBaseKit\n\n")
         arrayLines.append("protocol \(className)Elements where Self: Page {\n")
 
         let hasClassPrefix = !className.prefix(3).contains { $0.isLowercase }
@@ -157,13 +159,10 @@ public final class UITestablePageGenerator: Runnable {
         arrayLines.append("\tfunc check\(mutableClassName)(at index: Int) -> Self\n")
         arrayLines.append("}\n\n")
 
-        arrayLines.append("extension \(className)Elements {\n")
+        arrayLines.append("public extension \(className)Elements {\n")
         mutableClassName.lowercaseFirst()
         arrayLines.append("\tfunc \(mutableClassName)(at index: Int) -> XCUIElement {\n")
         arrayLines.append("\t\tapp.cells[String(format: UIElements.\(className)Elements.\(mutableClassName).rawValue + \"_%d\", index)].firstMatch\n\t}\n\n")
-        // for nested cell
-        arrayLines.append("\tfunc \(mutableClassName)(_ baseElement: XCUIElement, at index: Int) -> XCUIElement {\n")
-        arrayLines.append("\t\tbaseElement.cells[String(format: UIElements.\(className)Elements.\(mutableClassName).rawValue + \"_%d\", index)].firstMatch\n\t}\n\n")
         outlets.forEach { (name, type) in
             var mutableElementName = String(name)
             mutableElementName.uppercaseFirst()
