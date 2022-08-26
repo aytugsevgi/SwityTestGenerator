@@ -12,6 +12,12 @@ public final class AccessibilityGenerator: Runnable {
         identifier == "fordev"
     }
 
+    private enum ViewType {
+        case view
+        case viewController
+        case cell
+    }
+
     public func execute(lines: NSMutableArray?) {
         self.lines = lines
         conformAccessiblityIdenfiableToView()?.conformUITestablePageToView()?.generateUIElementClass()
@@ -20,8 +26,14 @@ public final class AccessibilityGenerator: Runnable {
     public var lines: NSMutableArray?
     private var className: String = .init()
     private var elementType: String?
-    private var isCellView: Bool {
-        className.suffix(5).contains("Cell")
+
+    private var viewType: ViewType {
+        if className.suffix(5).contains("Cell") {
+            return .cell
+        } else if className.suffix(15).contains("ViewController") {
+            return .viewController
+        }
+        return .view
     }
 
     private var isAlreadySet = false
@@ -126,7 +138,21 @@ public final class AccessibilityGenerator: Runnable {
                 arrayLines.append("\t\t                           \(name): .exist, ")
             }
         }
-        arrayLines.append("\t\treturn self\n\t}\n}")
+        arrayLines.append("\t\treturn self\n\t}\n")
+        outlets.forEach { (name, type) in
+            let elementType = UIElementType.init(rawValue: String(type)) ?? .otherElement
+            if elementType == .button {
+                arrayLines.append("\n")
+                var name = String(name)
+                name.uppercaseFirst()
+                arrayLines.append("\t@discardableResult\n")
+                arrayLines.append("\tfunc tap\(name)() -> Self {\n")
+                name.lowercaseFirst()
+                arrayLines.append("\t\texpect(element: \(name), status: .exist).tap()\n")
+                arrayLines.append("\t\treturn self\n\t}\n")
+            }
+        }
+        arrayLines.append("}")
         updateLines(from: arrayLines)
         return self
     }
@@ -159,8 +185,10 @@ public final class AccessibilityGenerator: Runnable {
             mutableElementName.uppercaseFirst()
             arrayLines.append("\tfunc \(mutableClassName)\(mutableElementName)(at index: Int) -> XCUIElement\n")
         }
+        mutableClassName.lowercaseFirst()
+        arrayLines.append("\tfunc \(mutableClassName)Elements(at index: Int, status: UIStatus) -> [XCUIElement : UIStatus]\n")
         mutableClassName.uppercaseFirst()
-        arrayLines.append("\tfunc check\(mutableClassName)(at index: Int) -> Self\n")
+        arrayLines.append("\tfunc check\(mutableClassName)(at index: Int, status: UIStatus) -> Self\n")
         arrayLines.append("}\n\n")
 
         arrayLines.append("public extension \(className)Elements {\n")
@@ -178,21 +206,127 @@ public final class AccessibilityGenerator: Runnable {
         }
         arrayLines.append("\t@discardableResult\n")
         mutableClassName.uppercaseFirst()
-        arrayLines.append("\tfunc check\(mutableClassName)(at index: Int = 0) -> Self {\n")
+        mutableClassName.lowercaseFirst()
+        arrayLines.append("\tfunc \(mutableClassName)Elements(at index: Int, status: UIStatus = .exist) -> [XCUIElement : UIStatus] {\n")
         mutableClassName.lowercaseFirst()
         for (index, name) in outletNames.enumerated() {
             var mutableElementName = String(name)
             mutableElementName.uppercaseFirst()
             if index == .zero {
-                let suffix = outletNames.count > 1 ? ", " : "])\n"
-                arrayLines.append("\t\twaitForElements(elements: [\(mutableClassName)\(mutableElementName)(at: index): .exist\(suffix)")
+                let suffix = outletNames.count > 1 ? ", " : "]\n\t}\n\n"
+                arrayLines.append("\t\t[\(mutableClassName)\(mutableElementName)(at: index): status\(suffix)")
             } else if index == outletNames.count - 1 {
-                arrayLines.append("\t\t                           \(mutableClassName)\(mutableElementName)(at: index): .exist])\n")
+                arrayLines.append("\t\t \(mutableClassName)\(mutableElementName)(at: index): status]\n\t}\n\n")
             } else {
-                arrayLines.append("\t\t                           \(mutableClassName)\(mutableElementName)(at: index): .exist,")
+                arrayLines.append("\t\t \(mutableClassName)\(mutableElementName)(at: index): status,")
             }
         }
-        arrayLines.append("\t\treturn self\n\t}\n}")
+        arrayLines.append("\t@discardableResult\n")
+        mutableClassName.uppercaseFirst()
+        arrayLines.append("\tfunc check\(mutableClassName)(at index: Int = 0, status: UIStatus = .exist) -> Self {\n")
+        mutableClassName.lowercaseFirst()
+        arrayLines.append("\t\twaitForElements(elements: \(mutableClassName)Elements(at: index, status: status))\n")
+        arrayLines.append("\t\treturn self\n\t}\n")
+
+        if !isAlreadySet {
+            mutableClassName.uppercaseFirst()
+            arrayLines.append("\n\t@discardableResult\n")
+            arrayLines.append("\tfunc tap\(mutableClassName)(at index: Int) -> Self {\n")
+            mutableClassName.lowercaseFirst()
+            arrayLines.append("\t\texpect(element: \(mutableClassName)(at: index), status: .exist).tap()\n")
+            arrayLines.append("\t\treturn self\n\t}\n")
+        }
+
+        outlets.forEach { (name, type) in
+            let elementType = UIElementType.init(rawValue: String(type)) ?? .otherElement
+            if elementType == .button {
+                arrayLines.append("\n")
+                var name = String(name)
+                name.uppercaseFirst()
+                arrayLines.append("\t@discardableResult\n")
+                arrayLines.append("\tfunc tap\(name)(at index: Int) -> Self {\n")
+                arrayLines.append("\t\texpect(element: \(mutableClassName)\(name)(at: index), status: .exist).tap()\n")
+                arrayLines.append("\t\treturn self\n\t}\n")
+            }
+        }
+        arrayLines.append("}")
+        updateLines(from: arrayLines)
+        return self
+    }
+
+    @discardableResult
+    private func generateUIElementView() -> Self? {
+        guard let lines = lines,
+              var arrayLines = Array(lines) as? Array<String>,
+              !outlets.isEmpty else { return nil }
+        arrayLines.append("\nimport XCTest\n")
+        arrayLines.append("import AccessibilityKit\n")
+        arrayLines.append("import UITestBaseKit\n\n")
+        arrayLines.append("protocol \(className)Elements where Self: Page {\n")
+
+        let hasClassPrefix = !className.prefix(3).contains { $0.isLowercase }
+        var mutableClassName = className
+        if hasClassPrefix {
+            mutableClassName.forEach { _ in
+                let isUppercasedFirstTwoChars = !mutableClassName.prefix(2).contains { $0.isLowercase }
+                guard isUppercasedFirstTwoChars else { return }
+                mutableClassName.removeFirst()
+            }
+        }
+        outlets.forEach { (name, type) in
+            var mutableElementName = String(name)
+            mutableElementName.lowercaseFirst()
+            arrayLines.append("\tvar \(mutableElementName): XCUIElement { get }\n")
+        }
+        mutableClassName.lowercaseFirst()
+        arrayLines.append("\n\tfunc \(mutableClassName)Elements(status: UIStatus) -> [XCUIElement : UIStatus]\n")
+        mutableClassName.uppercaseFirst()
+        arrayLines.append("\tfunc check\(mutableClassName)(status: UIStatus) -> Self\n")
+        arrayLines.append("}\n\n")
+
+        arrayLines.append("public extension \(className)Elements {\n")
+        outlets.forEach { (name, type) in
+            var mutableElementName = String(name)
+            mutableElementName.lowercaseFirst()
+            arrayLines.append("\tvar \(mutableElementName): XCUIElement { ")
+            let elementType = UIElementType.init(rawValue: String(type)) ?? .otherElement
+            arrayLines.append("\t\tapp.\(elementType == .collection ? "collectionView" : "\(elementType)")\(elementType == .switches ? "" : "s")[UIElements.\(className)Elements.\(name).rawValue]\n\t}\n")
+        }
+        arrayLines.append("\n\t@discardableResult\n")
+        mutableClassName.lowercaseFirst()
+        arrayLines.append("\tfunc \(mutableClassName)Elements(status: UIStatus = .exist) -> [XCUIElement : UIStatus] {\n")
+        for (index, name) in outletNames.enumerated() {
+            var mutableElementName = String(name)
+            mutableElementName.uppercaseFirst()
+            if index == .zero {
+                let suffix = outletNames.count > 1 ? ", " : "]\n\t}\n\n"
+                arrayLines.append("\t\t[\(mutableClassName)\(mutableElementName): status\(suffix)")
+            } else if index == outletNames.count - 1 {
+                arrayLines.append("\t\t \(mutableClassName)\(mutableElementName): status]\n\t}\n\n")
+            } else {
+                arrayLines.append("\t\t \(mutableClassName)\(mutableElementName): status,")
+            }
+        }
+        arrayLines.append("\t@discardableResult\n")
+        mutableClassName.uppercaseFirst()
+        arrayLines.append("\tfunc check\(mutableClassName)(status: UIStatus = .exist) -> Self {\n")
+        mutableClassName.lowercaseFirst()
+        arrayLines.append("\t\twaitForElements(elements: \(mutableClassName)Elements(status: status))\n")
+        arrayLines.append("\t\treturn self\n\t}\n")
+        outlets.forEach { (name, type) in
+            let elementType = UIElementType.init(rawValue: String(type)) ?? .otherElement
+            if elementType == .button {
+                arrayLines.append("\n")
+                var name = String(name)
+                name.uppercaseFirst()
+                arrayLines.append("\t@discardableResult\n")
+                arrayLines.append("\tfunc tap\(name)() -> Self {\n")
+                name.lowercaseFirst()
+                arrayLines.append("\t\texpect(element: \(name), status: .exist).tap()\n")
+                arrayLines.append("\t\treturn self\n\t}\n")
+            }
+        }
+        arrayLines.append("}")
         updateLines(from: arrayLines)
         return self
     }
@@ -268,7 +402,7 @@ public final class AccessibilityGenerator: Runnable {
             arrayLines.append("\t}\n")
         }
         var cellName = className
-        if isCellView {
+        if viewType == .cell {
             var firstChar = ""
             for char in cellName {
                 if char.isLowercase {
@@ -287,7 +421,7 @@ public final class AccessibilityGenerator: Runnable {
             arrayLines.append("}\n")
         }
         if !outletNames.isEmpty {
-            arrayLines.append(createUIElements(outletNames: outletNames, elementsName: elementType ?? "\(className)Elements", isCell: isCellView, cellName: cellName))
+            arrayLines.append(createUIElements(outletNames: outletNames, elementsName: elementType ?? "\(className)Elements", isCell: viewType == .cell, cellName: cellName))
         }
         updateLines(from: arrayLines)
         return self
@@ -295,7 +429,12 @@ public final class AccessibilityGenerator: Runnable {
 
     @discardableResult
     private func generateUIElementClass() -> Self? {
-        isCellView ? generateUIElementCell() : generateUIElementPage()
+        if viewType == .cell {
+            return generateUIElementCell()
+        } else if viewType == .viewController {
+            return generateUIElementPage()
+        }
+        return generateUIElementView()
     }
 
     private enum UIElementType: String {
