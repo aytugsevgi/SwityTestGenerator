@@ -131,7 +131,7 @@ public final class AccessibilityGenerator: Runnable {
         arrayLines.append("\tpublic func check() -> Self {\n")
         for (index, name) in outletNames.enumerated() {
             if index == .zero {
-                arrayLines.append("\t\twaitForElements(elements: [\(name): .exist\(outletNames.count == 1 ? "])\n" : ", ")")
+                arrayLines.append("\t\twaitForPage(elements: [\(name): .exist\(outletNames.count == 1 ? "])\n" : ", ")")
             } else if index == outletNames.count - 1 {
                 arrayLines.append("\t\t                           \(name): .exist])\n")
             } else {

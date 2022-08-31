@@ -127,7 +127,7 @@ public final class UITestablePageGenerator: Runnable {
         arrayLines.append("\tpublic func check() -> Self {\n")
         for (index, name) in outletNames.enumerated() {
             if index == .zero {
-                arrayLines.append("\t\twaitForElements(elements: [\(name): .exist\(outletNames.count == 1 ? "])\n" : ", ")")
+                arrayLines.append("\t\twaitForPage(elements: [\(name): .exist\(outletNames.count == 1 ? "])\n" : ", ")")
             } else if index == outletNames.count - 1 {
                 arrayLines.append("\t\t                           \(name): .exist])\n")
             } else {
@@ -161,7 +161,7 @@ public final class UITestablePageGenerator: Runnable {
         arrayLines.append("\nimport XCTest\n")
         arrayLines.append("import AccessibilityKit\n")
         arrayLines.append("import UITestBaseKit\n\n")
-        arrayLines.append("protocol \(className)Elements where Self: Page {\n")
+        arrayLines.append("public protocol \(className)Elements where Self: Page {\n")
 
         let hasClassPrefix = !className.prefix(3).contains { $0.isLowercase }
         var mutableClassName = className
