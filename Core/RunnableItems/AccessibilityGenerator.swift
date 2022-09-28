@@ -131,11 +131,11 @@ public final class AccessibilityGenerator: Runnable {
         arrayLines.append("\tpublic func check() -> Self {\n")
         for (index, name) in outletNames.enumerated() {
             if index == .zero {
-                arrayLines.append("\t\twaitForPage(elements: [\(name): .exist\(outletNames.count == 1 ? "])\n" : ", ")")
+                arrayLines.append("\t\twaitForPage(elements: [[\(name): .exist\(outletNames.count == 1 ? "]])\n" : ", ")")
             } else if index == outletNames.count - 1 {
-                arrayLines.append("\t\t                           \(name): .exist])\n")
+                arrayLines.append("\t\t                        \(name): .exist]])\n")
             } else {
-                arrayLines.append("\t\t                           \(name): .exist, ")
+                arrayLines.append("\t\t                        \(name): .exist, ")
             }
         }
         arrayLines.append("\t\treturn self\n\t}\n")
@@ -146,7 +146,7 @@ public final class AccessibilityGenerator: Runnable {
                 var name = String(name)
                 name.uppercaseFirst()
                 arrayLines.append("\t@discardableResult\n")
-                arrayLines.append("\tfunc tap\(name)() -> Self {\n")
+                arrayLines.append("\tpublic func tap\(name)() -> Self {\n")
                 name.lowercaseFirst()
                 arrayLines.append("\t\texpect(element: \(name), status: .exist).tap()\n")
                 arrayLines.append("\t\treturn self\n\t}\n")
@@ -207,7 +207,7 @@ public final class AccessibilityGenerator: Runnable {
         arrayLines.append("\t@discardableResult\n")
         mutableClassName.uppercaseFirst()
         mutableClassName.lowercaseFirst()
-        arrayLines.append("\tfunc \(mutableClassName)Elements(at index: Int, status: UIStatus = .exist) -> [XCUIElement : UIStatus] {\n")
+        arrayLines.append("\tfunc \(mutableClassName)Elements(at index: Int = 0, status: UIStatus = .exist) -> [XCUIElement : UIStatus] {\n")
         mutableClassName.lowercaseFirst()
         for (index, name) in outletNames.enumerated() {
             var mutableElementName = String(name)
@@ -262,7 +262,7 @@ public final class AccessibilityGenerator: Runnable {
         arrayLines.append("\nimport XCTest\n")
         arrayLines.append("import AccessibilityKit\n")
         arrayLines.append("import UITestBaseKit\n\n")
-        arrayLines.append("protocol \(className)Elements where Self: Page {\n")
+        arrayLines.append("public protocol \(className)Elements where Self: Page {\n")
 
         let hasClassPrefix = !className.prefix(3).contains { $0.isLowercase }
         var mutableClassName = className
@@ -273,10 +273,11 @@ public final class AccessibilityGenerator: Runnable {
                 mutableClassName.removeFirst()
             }
         }
+        mutableClassName.lowercaseFirst()
         outlets.forEach { (name, type) in
             var mutableElementName = String(name)
-            mutableElementName.lowercaseFirst()
-            arrayLines.append("\tvar \(mutableElementName): XCUIElement { get }\n")
+            mutableElementName.uppercaseFirst()
+            arrayLines.append("\tvar \(mutableClassName)\(mutableElementName): XCUIElement { get }\n")
         }
         mutableClassName.lowercaseFirst()
         arrayLines.append("\n\tfunc \(mutableClassName)Elements(status: UIStatus) -> [XCUIElement : UIStatus]\n")
@@ -285,10 +286,11 @@ public final class AccessibilityGenerator: Runnable {
         arrayLines.append("}\n\n")
 
         arrayLines.append("public extension \(className)Elements {\n")
+        mutableClassName.lowercaseFirst()
         outlets.forEach { (name, type) in
             var mutableElementName = String(name)
-            mutableElementName.lowercaseFirst()
-            arrayLines.append("\tvar \(mutableElementName): XCUIElement { ")
+            mutableElementName.uppercaseFirst()
+            arrayLines.append("\tvar \(mutableClassName)\(mutableElementName): XCUIElement { ")
             let elementType = UIElementType.init(rawValue: String(type)) ?? .otherElement
             arrayLines.append("\t\tapp.\(elementType == .collection ? "collectionView" : "\(elementType)")\(elementType == .switches ? "" : "s")[UIElements.\(className)Elements.\(name).rawValue]\n\t}\n")
         }
@@ -320,9 +322,8 @@ public final class AccessibilityGenerator: Runnable {
                 var name = String(name)
                 name.uppercaseFirst()
                 arrayLines.append("\t@discardableResult\n")
-                arrayLines.append("\tfunc tap\(name)() -> Self {\n")
-                name.lowercaseFirst()
-                arrayLines.append("\t\texpect(element: \(name), status: .exist).tap()\n")
+                arrayLines.append("\tfunc tap\(mutableClassName)\(name)() -> Self {\n")
+                arrayLines.append("\t\texpect(element: \(mutableClassName)\(name), status: .exist).tap()\n")
                 arrayLines.append("\t\treturn self\n\t}\n")
             }
         }
