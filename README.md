@@ -11,8 +11,8 @@ An Xcode extension to generate ui/unit test generator automatically.
 
 ### Generate Mock For Unit Test
 
-This generator developed for new unit test structure. The structure will publish open source as soon. (Also assertion generator will publish.)
-You can use with [Mock Generator](https://github.com/seanhenry/SwiftMockGeneratorForXcode). Generate stub before Swifty's "Generate Mock"..
+This generator developed for new unit test structure. The structure will publish open source as soon.
+You can use with [Mock Generator](https://github.com/seanhenry/SwiftMockGeneratorForXcode). `Generate stub before Swifty's "Generate Mock"`
 
 ![generateMock](https://user-images.githubusercontent.com/33103753/170829064-cace23be-ad6b-4ba9-8280-1b791fabb596.gif)
 
