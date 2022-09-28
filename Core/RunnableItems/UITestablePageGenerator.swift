@@ -305,6 +305,7 @@ public final class UITestablePageGenerator: Runnable {
         mutableClassName.lowercaseFirst()
         arrayLines.append("\t\twaitForElements(elements: \(mutableClassName)Elements(status: status))\n")
         arrayLines.append("\t\treturn self\n\t}\n")
+        mutableClassName.uppercaseFirst()
         outlets.forEach { (name, type) in
             let elementType = UIElementType.init(rawValue: String(type)) ?? .otherElement
             if elementType == .button {
