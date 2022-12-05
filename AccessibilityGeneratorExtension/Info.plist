@@ -28,6 +28,7 @@
 		<dict>
 			<key>XCSourceEditorCommandDefinitions</key>
 			<array>
+				<string></string>
 				<dict>
 					<key>XCSourceEditorCommandClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
@@ -64,9 +65,9 @@
 					<key>XCSourceEditorCommandClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).SourceEditorCommand</string>
 					<key>XCSourceEditorCommandIdentifier</key>
-					<string>sort</string>
+					<string>updated</string>
 					<key>XCSourceEditorCommandName</key>
-					<string>Sort Import</string>
+					<string>Generate Updated Page (UI Test)</string>
 				</dict>
 			</array>
 			<key>XCSourceEditorExtensionPrincipalClass</key>

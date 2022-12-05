@@ -43,6 +43,8 @@
 		4AC7557C26F879D200A1EA79 /* UITestablePageGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC7557A26F879D100A1EA79 /* UITestablePageGenerator.swift */; };
 		4ACC36E0284BFCB000DCC35C /* lib_InternalSwiftSyntaxParser.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ACC36DF284BFCB000DCC35C /* lib_InternalSwiftSyntaxParser.dylib */; };
 		4ACC36E1284BFCB000DCC35C /* lib_InternalSwiftSyntaxParser.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 4ACC36DF284BFCB000DCC35C /* lib_InternalSwiftSyntaxParser.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		85809900293DE6BE00AC7E1E /* UpdatePageGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 858098FF293DE6BE00AC7E1E /* UpdatePageGenerator.swift */; };
+		85809901293DE6BE00AC7E1E /* UpdatePageGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 858098FF293DE6BE00AC7E1E /* UpdatePageGenerator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,6 +120,7 @@
 		4AC7557326F8758400A1EA79 /* RunnableEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnableEngine.swift; sourceTree = "<group>"; };
 		4AC7557A26F879D100A1EA79 /* UITestablePageGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestablePageGenerator.swift; sourceTree = "<group>"; };
 		4ACC36DF284BFCB000DCC35C /* lib_InternalSwiftSyntaxParser.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = lib_InternalSwiftSyntaxParser.dylib; path = Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/lib_InternalSwiftSyntaxParser.dylib; sourceTree = DEVELOPER_DIR; };
+		858098FF293DE6BE00AC7E1E /* UpdatePageGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePageGenerator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,6 +238,7 @@
 				4A6382E8271B394D0044DA79 /* UnitTestGenerator.swift */,
 				4A6382EB271B3A300044DA79 /* StorePresenter.swift */,
 				4A7B9A0A2742352B00B27E83 /* MockAccessibilityGenerator.swift */,
+				858098FF293DE6BE00AC7E1E /* UpdatePageGenerator.swift */,
 			);
 			path = RunnableItems;
 			sourceTree = "<group>";
@@ -350,6 +354,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A6382EC271B3A300044DA79 /* StorePresenter.swift in Sources */,
+				85809900293DE6BE00AC7E1E /* UpdatePageGenerator.swift in Sources */,
 				4A400F4626F8804400A5B8E6 /* SortGenerate.swift in Sources */,
 				4A400F4A26F8811700A5B8E6 /* String+Extension.swift in Sources */,
 				4A6382F0271B3A9B0044DA79 /* StorageManager.swift in Sources */,
@@ -370,6 +375,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A6382ED271B3A300044DA79 /* StorePresenter.swift in Sources */,
+				85809901293DE6BE00AC7E1E /* UpdatePageGenerator.swift in Sources */,
 				4A400F4726F8804400A5B8E6 /* SortGenerate.swift in Sources */,
 				4A400F4B26F8811700A5B8E6 /* String+Extension.swift in Sources */,
 				4A6382F1271B3A9B0044DA79 /* StorageManager.swift in Sources */,
@@ -533,7 +539,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 3.2;
-				DEVELOPMENT_TEAM = 3CTUR53B57;
+				DEVELOPMENT_TEAM = 554C4C8PZ7;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = AccessibilityGenerator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -560,7 +566,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 3.2;
-				DEVELOPMENT_TEAM = 3CTUR53B57;
+				DEVELOPMENT_TEAM = 554C4C8PZ7;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = AccessibilityGenerator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
