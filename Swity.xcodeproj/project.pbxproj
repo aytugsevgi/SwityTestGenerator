@@ -43,6 +43,10 @@
 		4AC7557C26F879D200A1EA79 /* UITestablePageGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC7557A26F879D100A1EA79 /* UITestablePageGenerator.swift */; };
 		4ACC36E0284BFCB000DCC35C /* lib_InternalSwiftSyntaxParser.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ACC36DF284BFCB000DCC35C /* lib_InternalSwiftSyntaxParser.dylib */; };
 		4ACC36E1284BFCB000DCC35C /* lib_InternalSwiftSyntaxParser.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 4ACC36DF284BFCB000DCC35C /* lib_InternalSwiftSyntaxParser.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		85809900293DE6BE00AC7E1E /* UpdatedPageGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 858098FF293DE6BE00AC7E1E /* UpdatedPageGenerator.swift */; };
+		85809901293DE6BE00AC7E1E /* UpdatedPageGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 858098FF293DE6BE00AC7E1E /* UpdatedPageGenerator.swift */; };
+		8580990C2941E92000AC7E1E /* SwiftSyntax in Frameworks */ = {isa = PBXBuildFile; productRef = 8580990B2941E92000AC7E1E /* SwiftSyntax */; };
+		8580990E2941E92000AC7E1E /* SwiftSyntaxBuilder in Frameworks */ = {isa = PBXBuildFile; productRef = 8580990D2941E92000AC7E1E /* SwiftSyntaxBuilder */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,6 +122,7 @@
 		4AC7557326F8758400A1EA79 /* RunnableEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnableEngine.swift; sourceTree = "<group>"; };
 		4AC7557A26F879D100A1EA79 /* UITestablePageGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestablePageGenerator.swift; sourceTree = "<group>"; };
 		4ACC36DF284BFCB000DCC35C /* lib_InternalSwiftSyntaxParser.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = lib_InternalSwiftSyntaxParser.dylib; path = Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/lib_InternalSwiftSyntaxParser.dylib; sourceTree = DEVELOPER_DIR; };
+		858098FF293DE6BE00AC7E1E /* UpdatedPageGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatedPageGenerator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +131,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A3F03AA284A5B0E000DF795 /* SwiftSemantics in Frameworks */,
+				8580990E2941E92000AC7E1E /* SwiftSyntaxBuilder in Frameworks */,
+				8580990C2941E92000AC7E1E /* SwiftSyntax in Frameworks */,
 				4ACC36E0284BFCB000DCC35C /* lib_InternalSwiftSyntaxParser.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -235,6 +242,7 @@
 				4A6382E8271B394D0044DA79 /* UnitTestGenerator.swift */,
 				4A6382EB271B3A300044DA79 /* StorePresenter.swift */,
 				4A7B9A0A2742352B00B27E83 /* MockAccessibilityGenerator.swift */,
+				858098FF293DE6BE00AC7E1E /* UpdatedPageGenerator.swift */,
 			);
 			path = RunnableItems;
 			sourceTree = "<group>";
@@ -260,6 +268,8 @@
 			name = Swity;
 			packageProductDependencies = (
 				4A3F03A9284A5B0E000DF795 /* SwiftSemantics */,
+				8580990B2941E92000AC7E1E /* SwiftSyntax */,
+				8580990D2941E92000AC7E1E /* SwiftSyntaxBuilder */,
 			);
 			productName = AccessibilityGenerator;
 			productReference = 4A8C7ED02693806C005011C5 /* Swity.app */;
@@ -314,6 +324,7 @@
 			mainGroup = 4A8C7EC72693806C005011C5;
 			packageReferences = (
 				4A3F03A8284A5B0E000DF795 /* XCRemoteSwiftPackageReference "SwiftSemantics" */,
+				8580990A2941E92000AC7E1E /* XCRemoteSwiftPackageReference "swift-syntax" */,
 			);
 			productRefGroup = 4A8C7ED12693806C005011C5 /* Products */;
 			projectDirPath = "";
@@ -350,6 +361,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A6382EC271B3A300044DA79 /* StorePresenter.swift in Sources */,
+				85809900293DE6BE00AC7E1E /* UpdatedPageGenerator.swift in Sources */,
 				4A400F4626F8804400A5B8E6 /* SortGenerate.swift in Sources */,
 				4A400F4A26F8811700A5B8E6 /* String+Extension.swift in Sources */,
 				4A6382F0271B3A9B0044DA79 /* StorageManager.swift in Sources */,
@@ -370,6 +382,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A6382ED271B3A300044DA79 /* StorePresenter.swift in Sources */,
+				85809901293DE6BE00AC7E1E /* UpdatedPageGenerator.swift in Sources */,
 				4A400F4726F8804400A5B8E6 /* SortGenerate.swift in Sources */,
 				4A400F4B26F8811700A5B8E6 /* String+Extension.swift in Sources */,
 				4A6382F1271B3A9B0044DA79 /* StorageManager.swift in Sources */,
@@ -533,7 +546,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 3.2;
-				DEVELOPMENT_TEAM = 3CTUR53B57;
+				DEVELOPMENT_TEAM = 554C4C8PZ7;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = AccessibilityGenerator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -560,7 +573,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 3.2;
-				DEVELOPMENT_TEAM = 3CTUR53B57;
+				DEVELOPMENT_TEAM = 554C4C8PZ7;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = AccessibilityGenerator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -591,7 +604,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.trendyol.AccessibilityGenerator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -614,7 +627,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.trendyol.AccessibilityGenerator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -663,6 +676,14 @@
 				kind = branch;
 			};
 		};
+		8580990A2941E92000AC7E1E /* XCRemoteSwiftPackageReference "swift-syntax" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-syntax.git";
+			requirement = {
+				branch = release/5.5;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -675,6 +696,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4A3F03A8284A5B0E000DF795 /* XCRemoteSwiftPackageReference "SwiftSemantics" */;
 			productName = SwiftSemantics;
+		};
+		8580990B2941E92000AC7E1E /* SwiftSyntax */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8580990A2941E92000AC7E1E /* XCRemoteSwiftPackageReference "swift-syntax" */;
+			productName = SwiftSyntax;
+		};
+		8580990D2941E92000AC7E1E /* SwiftSyntaxBuilder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8580990A2941E92000AC7E1E /* XCRemoteSwiftPackageReference "swift-syntax" */;
+			productName = SwiftSyntaxBuilder;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
