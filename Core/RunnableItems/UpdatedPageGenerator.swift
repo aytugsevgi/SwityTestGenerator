@@ -1,5 +1,5 @@
 //
-//  UpdatePage.swift
+//  UpdatedPageGenerator.swift
 //  Swity
 //
 //  Created by Atakan Karslı on 05/12/2022.
@@ -20,7 +20,7 @@ public final class UpdatedPageGenerator: Runnable {
 
     public func execute(lines: NSMutableArray?) {
         self.lines = lines
-        conformAccessiblityIdenfiableToView()?.conformUITestablePageToView()?.generateUIElementClass()
+        generateUIElementClass()
     }
 
     public var lines: NSMutableArray?
@@ -115,8 +115,7 @@ public final class UpdatedPageGenerator: Runnable {
         arrayLines.append("public final class \(classWithoutSuffix)Page: UIElementPage<UIElements.\(className)Elements> {\n")
         arrayLines.append("\t// MARK: - \(className)")
         outlets.forEach { (name, type) in
-            let elementType = UIElementType.init(rawValue: String(type)) ?? .otherElement
-            arrayLines.append("\tlazy var \(name) = \(elementType)(.\(name))\n")
+            arrayLines.append("\tlazy var \(name) = \(type)(.\(name))\n")
         }
         arrayLines.append("\n\tpublic required init() {\n")
         arrayLines.append("\t\tsuper.init()\n")
@@ -136,8 +135,7 @@ public final class UpdatedPageGenerator: Runnable {
         }
         arrayLines.append("\t\treturn self\n\t}\n")
         outlets.forEach { (name, type) in
-            let elementType = UIElementType.init(rawValue: String(type)) ?? .otherElement
-            if elementType == .button {
+            if type == "buttons" {
                 arrayLines.append("\n")
                 var name = String(name)
                 name.uppercaseFirst()
@@ -193,8 +191,7 @@ public final class UpdatedPageGenerator: Runnable {
             var mutableElementName = String(name)
             mutableElementName.uppercaseFirst()
             arrayLines.append("\tfunc \(mutableClassName)\(mutableElementName)(at index: Int = 0) -> XCUIElement {\n")
-            let elementType = UIElementType.init(rawValue: String(type)) ?? .otherElement
-            arrayLines.append("\t\t\(mutableClassName)(at: index).\(elementType == .collection ? "collectionView" : "\(elementType)")\(elementType == .switches ? "" : "s")[UIElements.\(className)Elements.\(name).rawValue]\n\t}\n\n")
+            arrayLines.append("\t\t\(mutableClassName)(at: index).\(type)[UIElements.\(className)Elements.\(name).rawValue]\n\t}\n\n")
         }
         arrayLines.append("\t@discardableResult\n")
         mutableClassName.lowercaseFirst()
@@ -281,8 +278,7 @@ public final class UpdatedPageGenerator: Runnable {
             mutableElementName.uppercaseFirst()
             mutableClassName.lowercaseFirst()
             arrayLines.append("\tvar \(mutableClassName)\(mutableElementName): XCUIElement { ")
-            let elementType = UIElementType.init(rawValue: String(type)) ?? .otherElement
-            arrayLines.append("\t\tapp.\(elementType == .collection ? "collectionView" : "\(elementType)")\(elementType == .switches ? "" : "s")[UIElements.\(className)Elements.\(name).rawValue]\n\t}\n")
+            arrayLines.append("\t\tapp.\(type)[UIElements.\(className)Elements.\(name).rawValue]\n\t}\n")
         }
         arrayLines.append("\n\t@discardableResult\n")
         mutableClassName.lowercaseFirst()
@@ -307,8 +303,7 @@ public final class UpdatedPageGenerator: Runnable {
         arrayLines.append("\t\treturn self\n\t}\n")
         mutableClassName.uppercaseFirst()
         outlets.forEach { (name, type) in
-            let elementType = UIElementType.init(rawValue: String(type)) ?? .otherElement
-            if elementType == .button {
+            if type == "buttons" {
                 arrayLines.append("\n")
                 var name = String(name)
                 name.uppercaseFirst()
@@ -319,77 +314,6 @@ public final class UpdatedPageGenerator: Runnable {
             }
         }
         arrayLines.append("}")
-        updateLines(from: arrayLines)
-        return self
-    }
-
-    @discardableResult
-    private func conformAccessiblityIdenfiableToView() -> Self? {
-        guard let lines = lines,
-              var arrayLines = Array(lines) as? Array<String> else { return nil }
-        if let firstImportLine = arrayLines.first(where: { $0.contains("import") }),
-           let index = arrayLines.firstIndex(of: firstImportLine),
-           !arrayLines.contains(where: {$0.contains("import AccessibilityKit")}) {
-            arrayLines.insert("import AccessibilityKit", at: abs(index.distance(to: 0)))
-        }
-        guard let classLine = arrayLines.first(where: { $0.contains("class") && $0.contains(":") }) else { return nil }
-        let classLineWords = classLine.split(separator: " ")
-        guard let classIndex = classLineWords.firstIndex(of: "class") else { return nil }
-        className = String(classLineWords[classIndex + 1])
-
-        className.removeAll { $0 == ":"}
-        let interfaceName = className.replacingOccurrences(of: "Controller", with: "")
-        //MARK: - Protocol conform AccessibilityIdentifiable
-        if let interfaceLine = arrayLines.first(where: { $0.contains("protocol \(interfaceName)") }) {
-            if !interfaceLine.contains("AccessibilityIdentifiable") {
-                let conformedLine = addAccessibilityIdetifiable(to: interfaceLine)
-                guard let interfaceIndex = arrayLines.firstIndex(of: interfaceLine) else { return nil }
-                arrayLines.remove(at: abs(interfaceIndex.distance(to: 0)))
-                arrayLines.insert(conformedLine, at: abs(interfaceIndex.distance(to: 0)))
-            }
-        } else if !classLine.contains("AccessibilityIdentifiable") {
-            let conformedLine = addAccessibilityIdetifiable(to: classLine)
-            guard let interfaceIndex = arrayLines.firstIndex(of: classLine) else { return nil }
-            arrayLines.remove(at: abs(interfaceIndex.distance(to: 0)))
-            arrayLines.insert(conformedLine, at: abs(interfaceIndex.distance(to: 0)))
-        }
-        updateLines(from: arrayLines)
-        return self
-    }
-
-    @discardableResult
-    private func conformUITestablePageToView() -> Self? {
-        guard let lines = lines,
-              var arrayLines = Array(lines) as? Array<String>,
-              !outlets.isEmpty else { return nil }
-        arrayLines.append("\n// MARK: - UITestable\nextension \(className): UITestablePage {\n")
-        arrayLines.append("\ttypealias UIElementType = UIElements.\(className)Elements\n\n")
-        arrayLines.append("\tfunc setAccessibilityIdentifiers() {\n")
-        for (name, outletType) in outlets {
-            arrayLines.append("\t\tmakeViewTestable(\(name), using: .\(name))\n")
-            if outletType == "UISearchBar" {
-                arrayLines.append("\t\tmakeViewTestable(\(name).textfield, using: .searchTextField)\n")
-            }
-        }
-        arrayLines.append("\t}\n")
-        var cellName = className
-        if viewType == .cell {
-            var firstChar = ""
-            for char in cellName {
-                if char.isLowercase {
-                    break
-                }
-                firstChar = String(cellName.removeFirst())
-            }
-            cellName = firstChar.lowercased() + cellName
-            arrayLines.append("\n\tfunc setAccessibilityIdentifiers(at index: Int) {\n")
-            arrayLines.append("\t\tmakeViewTestable(self, using: .\(cellName), index: index)\n")
-            arrayLines.append("\t}\n")
-        }
-        arrayLines.append("}\n\n")
-        if !outletNames.isEmpty {
-            arrayLines.append(createUIElements(outletNames: outletNames, elementsName: "\(className)Elements", isCell: viewType == .cell, cellName: cellName))
-        }
         updateLines(from: arrayLines)
         return self
     }
