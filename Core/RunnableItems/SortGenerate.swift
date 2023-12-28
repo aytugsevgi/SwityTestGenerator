@@ -19,19 +19,21 @@ final class SortGenerate: Runnable {
         // Implement your command here, invoking the completion handler when done. Pass it nil on success, and an NSError on failure.
         guard let lines = lines else { return }
         let bridgedLines = lines.compactMap { $0 as? String }
-
+        
         let importFrameworks = bridgedLines.enumerated().compactMap({
             $0.element.isImportLine ? $0.element.removeImportPrefix.removeNewLine : nil
         }).sorted()
-
+        
+        let sortedImports = importFrameworks.map { "import \($0)" }.sorted()
+        
         let importIndex = bridgedLines.enumerated().compactMap({
             $0.element.isImportLine ? $0.offset : nil
         }).sorted()
-
-        guard importIndex.count == importFrameworks.count && lines.count > importIndex.count else {
+        
+        guard importIndex.count == sortedImports.count && lines.count > importIndex.count else {
             return
         }
-        importFrameworks.enumerated().forEach({ lines[importIndex[$0]] = "import \($1)" })
+        sortedImports.enumerated().forEach({ lines[importIndex[$0]] = $1 })
     }
 }
 
